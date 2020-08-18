@@ -41,17 +41,17 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId 'com.aqrlei.lib'
-                artifactId 'litelog'
+                artifactId app.artifactId
                 version app.versionName
 
                 artifact(sourcesJar)
                 artifact(dokkaJar)
 
                 pom {
-                    name = 'litelog'
+                    name = app.artifactId
                     packaging 'aar'
-                    description = 'A log library of Android'
-                    url = 'https://github.com/AqrLei/LiteLog'
+                    description = app.desc
+                    url = app.url
                     licenses {
                         license {
                             name = 'The Apache License, Version 2.0'
@@ -66,9 +66,9 @@ afterEvaluate {
                         }
                     }
                     scm {
-                        connection = 'scm:git:git://github.com:AqrLei/LiteLog.git'
-                        developerConnection = 'scm:git:ssh://github.com:AqrLei/LiteLog.git'
-                        url = 'https://github.com/AqrLei/LiteLog'
+                        connection = app.connection
+                        developerConnection = app.developerConnection
+                        url = app.url
                     }
                 }
             }
@@ -91,14 +91,14 @@ afterEvaluate {
 
         pkg {
             repo = "lib"
-            name = "litelog"
+            name = app.artifactId
             licenses = ['Apache-2.0']
-            websiteUrl = "https://github.com/AqrLei/LiteLog"
-            vcsUrl = "https://github.com/AqrLei/LiteLog.git"
+            websiteUrl = app.url
+            vcsUrl = app.vcsUrl
 
             publicDownloadNumbers = true
 
-            githubRepo = 'AqrLei/litelog'
+            githubRepo = app.githubRepo
             githubReleaseNotesFile = 'README.md'
 
             version {
