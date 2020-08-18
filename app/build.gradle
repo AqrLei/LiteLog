@@ -33,4 +33,5 @@ dependencies {
     androidTestImplementation deps.android.junit_ext
     androidTestImplementation deps.android.espresso
 
+    implementation 'com.aqrlei.lib:litelog:1.0.0'
 }
