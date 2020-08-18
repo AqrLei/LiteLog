@@ -1,0 +1,105 @@
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+apply plugin: 'org.jetbrains.dokka'
+
+dokka {
+    outputFormat = "javadoc"
+    outputDirectory = "$buildDir/documentation"
+    //配置方式一
+    configuration {
+        noJdkLink = true
+        noStdlibLink = true
+        noAndroidSdkLink = true
+        skipDeprecated = true // Do not output deprecated members
+        reportUndocumented = true // Emit warnings about not documented members.
+        skipEmptyPackages = true // Do not create index pages for empty packages
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.source
+    archiveClassifier.set('sources')
+}
+
+task dokkaJar(type: Jar, dependsOn: dokka) {
+    from dokka.outputDirectory
+    archiveClassifier.set('javadoc')
+}
+
+tasks.withType(Javadoc) {//防止编码问题
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId 'com.aqrlei.lib'
+                artifactId 'litelog'
+                version app.versionName
+
+                artifact(sourcesJar)
+                artifact(dokkaJar)
+
+                pom {
+                    name = 'litelog'
+                    packaging 'aar'
+                    description = 'A log library of Android'
+                    url = 'https://github.com/AqrLei/LiteLog'
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'AqrLei'
+                            name = 'AqrLei'
+                            email = 'aqrdeveloper@gmail.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git://github.com:AqrLei/LiteLog.git'
+                        developerConnection = 'scm:git:ssh://github.com:AqrLei/LiteLog.git'
+                        url = 'https://github.com/AqrLei/LiteLog'
+                    }
+                }
+            }
+        }
+    }
+
+    bintray {
+        user = properties.getProperty("bintray.user")
+        key = properties.getProperty("bintray.key")
+        publications = ['release']
+
+        publish = true //[Default: false] Whether version should be auto published after an upload
+
+        pkg {
+            repo = "lib"
+            name = "litelog"
+            licenses = ['Apache-2.0']
+            websiteUrl = "https://github.com/AqrLei/LiteLog"
+            vcsUrl = "https://github.com/AqrLei/LiteLog.git"
+
+            publicDownloadNumbers = true
+
+            githubRepo = 'AqrLei/litelog'
+            githubReleaseNotesFile = 'README.md'
+
+            version {
+                name = app.versionName
+                desc = app.versionName
+                released = new Date()
+                vcsTag = app.versionName
+            }
+        }
+    }
+}

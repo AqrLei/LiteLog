@@ -1,0 +1,3 @@
+include ':litelog'
+include ':app'
+rootProject.name = "LiteLog"
