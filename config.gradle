@@ -26,7 +26,6 @@ ext {
             vcsUrl            : "https://github.com/AqrLei/LiteLog.git",
             connection        : "scm:git:git://github.com:AqrLei/LiteLog.git",
             dveloperConnection: "scm:git:ssh://github.com:AqrLei/LiteLog.git",
-            githubRepo        : "AqrLei/LiteLog",
     ]
 
     android = [
