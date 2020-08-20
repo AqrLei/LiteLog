@@ -18,8 +18,9 @@ ext {
             minSdkVersion     : 21,
             targetSdkVersion  : 30,
 
-            versionCode       : 1000101,
-            versionName       : "1.0.1",
+            versionCode       : 1000201,
+            versionName       : "1.0.2",
+            groupId           : "com.aqrlei.lib",
             artifactId        : "litelog",
             desc              : "A log library of Android",
             url               : "https://github.com/AqrLei/LiteLog",
